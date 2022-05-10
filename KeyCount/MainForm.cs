@@ -4,7 +4,7 @@
 // </copyright>
 namespace KeyCount
 {
-    // directives
+    // Directives
     using System;
     using System.Collections.Generic;
     using System.Drawing;
@@ -22,6 +22,17 @@ namespace KeyCount
         {
             // The InitializeComponent() call is required for Windows Forms designer support.
             this.InitializeComponent();
+
+            // Add keys
+            foreach (var key in Enum.GetValues(typeof(Keys)))
+            {
+                // Check if unique
+                if (!this.keyComboBox.Items.Contains(key.ToString()))
+                {
+                    // Add to dropdown list
+                    this.keyComboBox.Items.Add(key.ToString());
+                }
+            }
         }
 
         /// <summary>
@@ -112,6 +123,25 @@ namespace KeyCount
         private void OnKeyComboBoxTextChanged(object sender, EventArgs e)
         {
             // TODO Add code
+        }
+
+        /// <summary>
+        /// Handles the main form load.
+        /// </summary>
+        /// <param name="sender">Sender object.</param>
+        /// <param name="e">Event arguments.</param>
+        private void OnMainFormLoad(object sender, EventArgs e)
+        {
+            // Focus enter key (13)
+            for (int i = 0; i < this.keyComboBox.Items.Count; i++)
+            {
+                if (Convert.ToInt32((Keys)Enum.Parse(typeof(Keys), this.keyComboBox.Items[i].ToString(), true)) == 13)
+                {
+                    this.keyComboBox.SelectedIndex = i;
+
+                    return;
+                }
+            }
         }
 
         /// <summary>
