@@ -199,6 +199,16 @@ namespace KeyCount
         }
 
         /// <summary>
+        /// Unsubscribe this instance.
+        /// </summary>
+        public void Unsubscribe()
+        {
+            m_GlobalHook.KeyPress -= GlobalHookKeyPress;
+
+            m_GlobalHook.Dispose();
+        }
+
+        /// <summary>
         /// Globals the hook key press.
         /// </summary>
         /// <param name="sender">Sender.</param>
