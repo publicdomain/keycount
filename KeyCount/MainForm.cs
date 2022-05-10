@@ -8,6 +8,7 @@ namespace KeyCount
     using System;
     using System.Collections.Generic;
     using System.Drawing;
+    using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
     /// <summary>
@@ -15,6 +16,26 @@ namespace KeyCount
     /// </summary>
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Registers the hot key.
+        /// </summary>
+        /// <returns><c>true</c>, if hot key was registered, <c>false</c> otherwise.</returns>
+        /// <param name="hWnd">H window.</param>
+        /// <param name="id">Identifier.</param>
+        /// <param name="fsModifiers">Fs modifiers.</param>
+        /// <param name="vk">Vk.</param>
+        [DllImport("User32")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
+
+        /// <summary>
+        /// Unregisters the hot key.
+        /// </summary>
+        /// <returns><c>true</c>, if hot key was unregistered, <c>false</c> otherwise.</returns>
+        /// <param name="hWnd">H window.</param>
+        /// <param name="id">Identifier.</param>
+        [DllImport("User32")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:KeyCount.MainForm"/> class.
         /// </summary>
@@ -141,6 +162,42 @@ namespace KeyCount
 
                     return;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Processes the hotkey registration.
+        /// </summary>
+        /// <param name="registerHotkey">If set to <c>true</c> register hotkey.</param>
+        private void ProcessHotkeyRegistration(bool registerHotkey)
+        {
+            // Try to unregister the key
+            try
+            {
+                // Unregister the hotkey
+                UnregisterHotKey(this.Handle, 0);
+            }
+            catch
+            {
+                // Let it fall through
+            }
+
+            // Halt on unregister
+            if (!registerHotkey)
+            {
+                // Halt flow
+                return;
+            }
+
+            // Hotkey registration
+            try
+            {
+                // Register the hotkey with selected modifiers
+                RegisterHotKey(this.Handle, 0, 0, Convert.ToInt32((Keys)Enum.Parse(typeof(Keys), this.keyComboBox.SelectedItem.ToString(), true)));
+            }
+            catch
+            {
+                // Let it fall through
             }
         }
 
