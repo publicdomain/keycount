@@ -7,6 +7,7 @@ namespace KeyCount
     // Directives
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Drawing;
     using System.Reflection;
     using System.Runtime.InteropServices;
@@ -33,6 +34,11 @@ namespace KeyCount
         /// The m global hook.
         /// </summary>
         private IKeyboardMouseEvents m_GlobalHook;
+
+        /// <summary>
+        /// The stopwatch.
+        /// </summary>
+        Stopwatch stopwatch = new Stopwatch();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:KeyCount.MainForm"/> class.
@@ -73,6 +79,12 @@ namespace KeyCount
             // Check for Star(t) vs Sto(p)
             if (this.startStopButton.Text.EndsWith("t", StringComparison.InvariantCulture))
             {
+                // Start stopwatch
+                this.stopwatch.Start();
+
+                // Start timer
+                this.activeTimer.Start();
+
                 // Subscribe
                 this.Subscribe();
 
@@ -82,6 +94,12 @@ namespace KeyCount
             }
             else
             {
+                // Stop stopwatch
+                this.stopwatch.Stop();
+
+                // Stop timer
+                this.activeTimer.Stop();
+
                 // Unsubscribe
                 this.Unsubscribe();
 
@@ -218,6 +236,17 @@ namespace KeyCount
         private void GlobalHookKeyPress(object sender, KeyPressEventArgs e)
         {
             // TODO Add code
+        }
+
+        /// <summary>
+        /// Handles the active timer tick.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        private void OnActiveTimerTick(object sender, EventArgs e)
+        {
+            // Show elapsed time
+            this.countCountToolStripStatusLabel.Text = this.stopwatch.Elapsed.ToString(@"hh\:mm\:ss");
         }
 
         /// <summary>

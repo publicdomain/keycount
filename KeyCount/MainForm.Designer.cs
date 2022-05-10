@@ -29,6 +29,7 @@ namespace KeyCount
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,6 +64,7 @@ namespace KeyCount
 			this.countTextLabel = new System.Windows.Forms.Label();
 			this.countLabel = new System.Windows.Forms.Label();
 			this.startStopButton = new System.Windows.Forms.Button();
+			this.activeTimer = new System.Windows.Forms.Timer(this.components);
 			this.mainMenuStrip.SuspendLayout();
 			this.mainStatusStrip.SuspendLayout();
 			this.mainTableLayoutPanel.SuspendLayout();
@@ -362,6 +364,11 @@ namespace KeyCount
 			this.startStopButton.UseVisualStyleBackColor = true;
 			this.startStopButton.Click += new System.EventHandler(this.OnStartStopButtonClick);
 			// 
+			// activeTimer
+			// 
+			this.activeTimer.Interval = 1000;
+			this.activeTimer.Tick += new System.EventHandler(this.OnActiveTimerTick);
+			// 
 			// MainForm
 			// 
 			this.AcceptButton = this.startStopButton;
@@ -385,6 +392,7 @@ namespace KeyCount
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Timer activeTimer;
 		private System.Windows.Forms.Button startStopButton;
 		private System.Windows.Forms.Label countLabel;
 		private System.Windows.Forms.Label countTextLabel;
