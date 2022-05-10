@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
     </Reference>
+    <Reference Include="Gma.System.MouseKeyHook">
+      <HintPath>Resources\Gma.System.MouseKeyHook.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainForm.cs" />
@@ -58,6 +61,8 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Resources\enter_g4cbcff151_640_Il8_icon.ico" />
+    <None Include="Resources\Gma.System.MouseKeyHook.dll" />
+    <None Include="Resources\MouseKeyHook-LICENSE.txt" />
     <None Include="Resources\publicdomain.is_7-8-vista-xp.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,7 @@ namespace KeyCount
     using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
+    using Gma.System.MouseKeyHook;
 
     /// <summary>
     /// Description of MainForm.
@@ -29,29 +30,9 @@ namespace KeyCount
         private Icon associatedIcon = null;
 
         /// <summary>
-        /// Registers the hot key.
+        /// The m global hook.
         /// </summary>
-        /// <returns><c>true</c>, if hot key was registered, <c>false</c> otherwise.</returns>
-        /// <param name="hWnd">H window.</param>
-        /// <param name="id">Identifier.</param>
-        /// <param name="fsModifiers">Fs modifiers.</param>
-        /// <param name="vk">Vk.</param>
-        [DllImport("User32")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
-
-        /// <summary>
-        /// Unregisters the hot key.
-        /// </summary>
-        /// <returns><c>true</c>, if hot key was unregistered, <c>false</c> otherwise.</returns>
-        /// <param name="hWnd">H window.</param>
-        /// <param name="id">Identifier.</param>
-        [DllImport("User32")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-        /// <summary>
-        /// The wm hotkey.
-        /// </summary>
-        private static int WM_HOTKEY = 0x0312;
+        private IKeyboardMouseEvents m_GlobalHook;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:KeyCount.MainForm"/> class.
@@ -82,32 +63,30 @@ namespace KeyCount
         }
 
         /// <summary>
-        /// Window procedure.
-        /// </summary>
-        /// <param name="m">M.</param>
-        protected override void WndProc(ref Message m)
-        {
-            // Process message
-            base.WndProc(ref m);
-
-            // Check for hotkey press
-            if (m.Msg == WM_HOTKEY)
-            {
-                // Raise count
-                this.count++;
-
-                // Update count label
-                this.countLabel.Text = $"{this.count}";
-            }
-        }
-        /// <summary>
         /// Handles the start stop button click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
         private void OnStartStopButtonClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Check for start
+            // Check for Star(t) vs Sto(p)
+            if (this.startStopButton.Text.EndsWith("t", StringComparison.InvariantCulture))
+            {
+                // Subscribe
+
+                // Change to stop
+                this.startStopButton.Text = "&Stop";
+                this.startStopButton.ForeColor = Color.Red;
+            }
+            else
+            {
+                // Unsubscribe
+
+                // Reset to start
+                this.startStopButton.Text = "&Start";
+                this.startStopButton.ForeColor = Color.DarkGreen;
+            }
         }
 
         /// <summary>
@@ -210,39 +189,23 @@ namespace KeyCount
         }
 
         /// <summary>
-        /// Processes the hotkey registration.
+        /// Subscribe this instance.
         /// </summary>
-        /// <param name="registerHotkey">If set to <c>true</c> register hotkey.</param>
-        private void ProcessHotkeyRegistration(bool registerHotkey)
+        public void Subscribe()
         {
-            // Try to unregister the key
-            try
-            {
-                // Unregister the hotkey
-                UnregisterHotKey(this.Handle, 0);
-            }
-            catch
-            {
-                // Let it fall through
-            }
+            m_GlobalHook = Hook.GlobalEvents();
 
-            // Halt on unregister
-            if (!registerHotkey)
-            {
-                // Halt flow
-                return;
-            }
+            m_GlobalHook.KeyPress += GlobalHookKeyPress;
+        }
 
-            // Hotkey registration
-            try
-            {
-                // Register the hotkey with selected modifiers
-                RegisterHotKey(this.Handle, 0, 0, Convert.ToInt32((Keys)Enum.Parse(typeof(Keys), this.keyComboBox.SelectedItem.ToString(), true)));
-            }
-            catch
-            {
-                // Let it fall through
-            }
+        /// <summary>
+        /// Globals the hook key press.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        private void GlobalHookKeyPress(object sender, KeyPressEventArgs e)
+        {
+            // TODO Add code
         }
 
         /// <summary>
