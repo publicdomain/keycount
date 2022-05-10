@@ -74,6 +74,7 @@ namespace KeyCount
             if (this.startStopButton.Text.EndsWith("t", StringComparison.InvariantCulture))
             {
                 // Subscribe
+                this.Subscribe();
 
                 // Change to stop
                 this.startStopButton.Text = "&Stop";
@@ -82,6 +83,7 @@ namespace KeyCount
             else
             {
                 // Unsubscribe
+                this.Unsubscribe();
 
                 // Reset to start
                 this.startStopButton.Text = "&Start";
