@@ -18,6 +18,11 @@ namespace KeyCount
     public partial class MainForm : Form
     {
         /// <summary>
+        /// The count.
+        /// </summary>
+        private int count = 0;
+
+        /// <summary>
         /// Gets or sets the associated icon.
         /// </summary>
         /// <value>The associated icon.</value>
@@ -42,6 +47,11 @@ namespace KeyCount
         /// <param name="id">Identifier.</param>
         [DllImport("User32")]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+        /// <summary>
+        /// The wm hotkey.
+        /// </summary>
+        private static int WM_HOTKEY = 0x0312;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:KeyCount.MainForm"/> class.
@@ -71,6 +81,25 @@ namespace KeyCount
             this.freeReleasesPublicDomainisToolStripMenuItem.Image = this.associatedIcon.ToBitmap();
         }
 
+        /// <summary>
+        /// Window procedure.
+        /// </summary>
+        /// <param name="m">M.</param>
+        protected override void WndProc(ref Message m)
+        {
+            // Process message
+            base.WndProc(ref m);
+
+            // Check for hotkey press
+            if (m.Msg == WM_HOTKEY)
+            {
+                // Raise count
+                this.count++;
+
+                // Update count label
+                this.countLabel.Text = $"{this.count}";
+            }
+        }
         /// <summary>
         /// Handles the start stop button click.
         /// </summary>
