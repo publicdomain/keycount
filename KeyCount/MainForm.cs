@@ -8,6 +8,7 @@ namespace KeyCount
     using System;
     using System.Collections.Generic;
     using System.Drawing;
+    using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
@@ -16,6 +17,12 @@ namespace KeyCount
     /// </summary>
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Gets or sets the associated icon.
+        /// </summary>
+        /// <value>The associated icon.</value>
+        private Icon associatedIcon = null;
+
         /// <summary>
         /// Registers the hot key.
         /// </summary>
@@ -54,6 +61,14 @@ namespace KeyCount
                     this.keyComboBox.Items.Add(key.ToString());
                 }
             }
+
+            /* Set icons */
+
+            // Set associated icon from exe file
+            this.associatedIcon = Icon.ExtractAssociatedIcon(typeof(MainForm).GetTypeInfo().Assembly.Location);
+
+            // Set icon for Free Releases @ PublicDomain.is menu item
+            this.freeReleasesPublicDomainisToolStripMenuItem.Image = this.associatedIcon.ToBitmap();
         }
 
         /// <summary>
