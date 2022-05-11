@@ -188,7 +188,8 @@ namespace KeyCount
         /// <param name="e">Event arguments.</param>
         private void OnOriginalThreadRedditcomToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Open original thread
+            Process.Start("https://www.reddit.com/r/software/comments/ulp3aa/any_way_to_count_individual_keystrokes/");
         }
 
         /// <summary>
