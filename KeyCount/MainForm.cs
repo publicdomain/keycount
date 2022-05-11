@@ -177,7 +177,8 @@ namespace KeyCount
         /// <param name="e">Event arguments.</param>
         private void OnFreeReleasesPublicDomainisToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Open our website
+            Process.Start("https://publicdomain.is");
         }
 
         /// <summary>
