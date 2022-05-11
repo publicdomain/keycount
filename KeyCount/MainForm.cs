@@ -25,6 +25,11 @@ namespace KeyCount
         private int count = 0;
 
         /// <summary>
+        /// The key code.
+        /// </summary>
+        private Keys keyCode;
+
+        /// <summary>
         /// Gets or sets the associated icon.
         /// </summary>
         /// <value>The associated icon.</value>
@@ -79,6 +84,9 @@ namespace KeyCount
             // Check for Star(t) vs Sto(p)
             if (this.startStopButton.Text.EndsWith("t", StringComparison.InvariantCulture))
             {
+                // Set key code
+                this.keyCode = (Keys)Enum.Parse(typeof(Keys), this.keyComboBox.SelectedItem.ToString(), true);
+
                 // Start stopwatch
                 this.stopwatch.Start();
 
@@ -215,7 +223,7 @@ namespace KeyCount
         {
             m_GlobalHook = Hook.GlobalEvents();
 
-            m_GlobalHook.KeyPress += GlobalHookKeyPress;
+            m_GlobalHook.KeyDown += OnGlobalHookKeyDown;
         }
 
         /// <summary>
@@ -223,26 +231,34 @@ namespace KeyCount
         /// </summary>
         public void Unsubscribe()
         {
-            m_GlobalHook.KeyPress -= GlobalHookKeyPress;
+            m_GlobalHook.KeyDown -= OnGlobalHookKeyDown;
 
             m_GlobalHook.Dispose();
         }
 
         /// <summary>
-        /// Globals the hook key press.
+        /// Handles the global hook key down.
         /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        private void GlobalHookKeyPress(object sender, KeyPressEventArgs e)
+        /// <param name="sender">Sender object.</param>
+        /// <param name="e">Event arguments.</param>
+        private void OnGlobalHookKeyDown(object sender, KeyEventArgs e)
         {
-            // TODO Add code
+            // Check for matching key code
+            if (this.keyCode == e.KeyCode)
+            {
+                // Raise count
+                this.count++;
+
+                // Update count label
+                this.countLabel.Text = $"{this.count}";
+            }
         }
 
         /// <summary>
         /// Handles the active timer tick.
         /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
+        /// <param name="sender">Sender object.</param>
+        /// <param name="e">Event arguments.</param>
         private void OnActiveTimerTick(object sender, EventArgs e)
         {
             // Show elapsed time
