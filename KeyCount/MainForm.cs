@@ -134,7 +134,9 @@ namespace KeyCount
         /// <param name="e">Event arguments.</param>
         private void OnCopyToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Copy current count
+            Clipboard.Clear();
+            Clipboard.SetText(this.count.ToString());
         }
 
         /// <summary>
