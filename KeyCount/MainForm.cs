@@ -124,7 +124,21 @@ namespace KeyCount
         /// <param name="e">Event arguments.</param>
         private void OnNewToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Stop activity
+            if (this.startStopButton.Text.EndsWith("p", StringComparison.InvariantCulture))
+            {
+                this.startStopButton.PerformClick();
+            }
+
+            // Reset count
+            this.count = 0;
+
+            // Reset stop watch
+            this.stopwatch.Reset();
+
+            // Reset labels
+            this.countLabel.Text = "0";
+            this.countCountToolStripStatusLabel.Text = "00:00:00";
         }
 
         /// <summary>
