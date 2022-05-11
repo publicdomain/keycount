@@ -194,7 +194,8 @@ namespace KeyCount
         /// <param name="e">Event arguments.</param>
         private void OnKeyComboBoxTextChanged(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Set key code
+            this.keyCode = (Keys)Enum.Parse(typeof(Keys), this.keyComboBox.SelectedItem.ToString(), true);
         }
 
         /// <summary>
